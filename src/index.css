@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Luo Ancient Movies - Dark Streaming Theme */
+
+@layer base {
+  :root {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 84% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 25 95% 53%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 5% 35%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 240 5% 15%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 5% 15%;
+    --input: 240 5% 12%;
+    --ring: 0 84% 60%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar */
+    --sidebar-background: 240 10% 5%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 84% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 100%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 5% 12%;
+    --sidebar-ring: 0 84% 60%;
+    --sidebar-muted: 240 5% 50%;
+
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(to right, hsl(0 84% 60%), hsl(25 95% 53%));
+    --gradient-subscribe: linear-gradient(to bottom right, hsl(0 84% 60% / 0.2), hsl(25 95% 53% / 0.2));
+  }
+
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 240 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+
+    --primary: 0 84% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 25 95% 53%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 5% 90%;
+    --muted-foreground: 240 5% 40%;
+
+    --accent: 240 5% 94%;
+    --accent-foreground: 240 10% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 5% 85%;
+    --input: 240 5% 92%;
+    --ring: 0 84% 60%;
+
+    --sidebar-background: 0 0% 97%;
+    --sidebar-foreground: 240 10% 10%;
+    --sidebar-primary: 0 84% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 94%;
+    --sidebar-accent-foreground: 240 10% 10%;
+    --sidebar-border: 240 5% 88%;
+    --sidebar-ring: 0 84% 60%;
+    --sidebar-muted: 240 5% 60%;
+  }
+
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 84% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 25 95% 53%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 5% 35%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 240 5% 15%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 5% 15%;
+    --input: 240 5% 12%;
+    --ring: 0 84% 60%;
+
+    --sidebar-background: 240 10% 5%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 84% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 100%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 5% 12%;
+    --sidebar-ring: 0 84% 60%;
+    --sidebar-muted: 240 5% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors;
+  }
+
+  .nav-link-active {
+    @apply bg-white/10 text-white font-semibold;
+  }
+
+  .nav-link-inactive {
+    @apply text-muted-foreground hover:bg-white/5 hover:text-foreground;
+  }
+
+  .gradient-primary {
+    background: linear-gradient(to right, hsl(0 84% 60%), hsl(25 95% 53%));
+  }
+
+  .gradient-subscribe {
+    background: linear-gradient(to bottom right, hsl(0 84% 60% / 0.2), hsl(25 95% 53% / 0.2));
+  }
+
+  .skeleton-pulse {
+    @apply bg-card/50 animate-pulse rounded-lg;
+  }
+}
+
+@layer utilities {
+  .backdrop-blur-custom {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* Hero Banner Slide Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutLeft {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0; }
+}
+@keyframes zoomIn {
+  from { transform: scale(1.05); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes zoomOut {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.95); opacity: 0; }
+}
+@keyframes slideInUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes slideOutDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(60px); opacity: 0; }
+}
+@keyframes flipIn {
+  from { transform: perspective(800px) rotateY(90deg); opacity: 0; }
+  to { transform: perspective(800px) rotateY(0); opacity: 1; }
+}
+@keyframes flipOut {
+  from { transform: perspective(800px) rotateY(0); opacity: 1; }
+  to { transform: perspective(800px) rotateY(-90deg); opacity: 0; }
+}
+@keyframes blurIn {
+  from { filter: blur(20px); opacity: 0; }
+  to { filter: blur(0); opacity: 1; }
+}
+@keyframes blurOut {
+  from { filter: blur(0); opacity: 1; }
+  to { filter: blur(20px); opacity: 0; }
+}
+@keyframes marquee {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100vw); }
+}
+@keyframes marquee-continuous {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+@keyframes easter-blink-fade {
+  0% { opacity: 1; filter: hue-rotate(0deg); }
+  5% { opacity: 0.2; filter: hue-rotate(60deg); }
+  10% { opacity: 1; filter: hue-rotate(120deg); }
+  15% { opacity: 0.2; filter: hue-rotate(180deg); }
+  20% { opacity: 1; filter: hue-rotate(240deg); }
+  25% { opacity: 0.2; filter: hue-rotate(300deg); }
+  30% { opacity: 1; filter: hue-rotate(360deg); }
+  85% { opacity: 1; filter: hue-rotate(0deg); }
+  100% { opacity: 0; filter: hue-rotate(0deg); }
+}
