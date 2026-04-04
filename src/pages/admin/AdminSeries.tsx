@@ -59,6 +59,7 @@ export default function AdminSeries() {
       seasons: "1",
       displayCategories: [],
       isFeatured: false,
+      vjName: "",
     });
     setEditingSeries(null);
   };
