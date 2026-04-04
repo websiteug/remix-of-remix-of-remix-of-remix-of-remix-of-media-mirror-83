@@ -86,7 +86,7 @@ export function Sidebar() {
         </nav>
 
         {/* Subscribe CTA */}
-        <div className="p-4 border-t border-sidebar-border relative z-10">
+        <div className="p-4 border-t border-sidebar-border">
           <div className="gradient-subscribe rounded-lg p-4 border border-primary/30">
             <h3 className="text-sm font-semibold mb-2">Subscribe Now</h3>
             <p className="text-xs text-muted-foreground mb-3">
