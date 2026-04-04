@@ -38,19 +38,9 @@ export function Sidebar() {
 
   return (
     <>
-      <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-56 border-r border-sidebar-border relative overflow-hidden">
-        {/* Hexagonal background */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: 'url(/images/hero-bg.jpg)',
-            backgroundSize: '200px 200px',
-            backgroundRepeat: 'repeat',
-          }}
-        />
-        <div className="absolute inset-0 z-0 bg-sidebar/90" />
+      <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-56 bg-sidebar border-r border-sidebar-border">
         {/* Logo */}
-        <div className="flex items-center gap-2 px-6 py-4 border-b border-sidebar-border relative z-10">
+        <div className="flex items-center gap-2 px-6 py-4 border-b border-sidebar-border">
           <img 
             src={luoAncientLogo} 
             alt="Luo Ancient Movies" 
@@ -62,7 +52,7 @@ export function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-4 px-3 relative z-10">
+        <nav className="flex-1 overflow-y-auto py-4 px-3">
           <div className="space-y-1">
             {navItems.map((item) => {
               const isActive = location.pathname === item.href;
@@ -96,7 +86,7 @@ export function Sidebar() {
         </nav>
 
         {/* Subscribe CTA */}
-        <div className="p-4 border-t border-sidebar-border relative z-10">
+        <div className="p-4 border-t border-sidebar-border">
           <div className="gradient-subscribe rounded-lg p-4 border border-primary/30">
             <h3 className="text-sm font-semibold mb-2">Subscribe Now</h3>
             <p className="text-xs text-muted-foreground mb-3">
