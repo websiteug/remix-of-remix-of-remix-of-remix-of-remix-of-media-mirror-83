@@ -153,10 +153,10 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
           {/* Episode Badge (S2 E3) */}
           {episodeInfo && (
             <div className="absolute bottom-2 left-2 flex gap-1 z-10">
-              <span className="bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded">
+              <span className="bg-primary text-primary-foreground text-[8px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded">
                 {episodeInfo.seasonLabel || `S${episodeInfo.seasonNumber}`}
               </span>
-              <span className="bg-accent text-accent-foreground text-[10px] font-bold px-1.5 py-0.5 rounded">
+              <span className="bg-accent text-accent-foreground text-[8px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded">
                 E{episodeInfo.episodeNumber}
               </span>
             </div>
