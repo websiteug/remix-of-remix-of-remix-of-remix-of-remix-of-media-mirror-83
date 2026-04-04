@@ -169,10 +169,10 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
           )}
         </div>
         <div className="mt-2">
-          <h3 className="text-sm font-medium truncate group-hover:text-primary transition-colors">
+          <h3 className="text-xs md:text-sm font-medium truncate group-hover:text-primary transition-colors">
             {episodeInfo ? episodeInfo.episodeTitle : movie.title}
           </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5">
             {episodeInfo ? `${movie.title} • ${episodeInfo.seasonLabel || `S${episodeInfo.seasonNumber}`}E${episodeInfo.episodeNumber}` : `${year} • Trending`}
           </p>
         </div>
