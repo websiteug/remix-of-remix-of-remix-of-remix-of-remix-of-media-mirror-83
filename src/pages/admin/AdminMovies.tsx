@@ -37,6 +37,7 @@ export default function AdminMovies() {
     displayCategories: [] as string[],
     isFeatured: false,
     isAgent: false,
+    vjName: "",
   });
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export default function AdminMovies() {
       displayCategories: [],
       isFeatured: false,
       isAgent: false,
+      vjName: "",
     });
     setEditingMovie(null);
   };
@@ -83,6 +85,7 @@ export default function AdminMovies() {
       displayCategories: movie.displayCategories || [],
       isFeatured: movie.isFeatured,
       isAgent: movie.isAgent || false,
+      vjName: movie.vjName || "",
     });
     setDialogOpen(true);
   };
@@ -212,14 +215,25 @@ export default function AdminMovies() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="trailerUrl">Trailer URL (optional)</Label>
-                <Input
-                  id="trailerUrl"
-                  type="url"
-                  value={formData.trailerUrl}
-                  onChange={(e) => setFormData({ ...formData, trailerUrl: e.target.value })}
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="trailerUrl">Trailer URL (optional)</Label>
+                  <Input
+                    id="trailerUrl"
+                    type="url"
+                    value={formData.trailerUrl}
+                    onChange={(e) => setFormData({ ...formData, trailerUrl: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="vjName">VJ Name (optional)</Label>
+                  <Input
+                    id="vjName"
+                    value={formData.vjName}
+                    onChange={(e) => setFormData({ ...formData, vjName: e.target.value })}
+                    placeholder="e.g. VJ Adamson"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-3 gap-4">

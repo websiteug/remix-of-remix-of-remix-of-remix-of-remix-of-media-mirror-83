@@ -18,6 +18,7 @@ export interface Movie {
   isFeatured: boolean;
   isAgent?: boolean;
   agentMarkedAt?: number;
+  vjName?: string;
   createdAt: number;
   views?: number;
 }
@@ -34,6 +35,7 @@ export interface Series {
   seasons: number;
   displayCategories: string[];
   isFeatured: boolean;
+  vjName?: string;
   createdAt: number;
   views?: number;
   hasAgentEpisode?: boolean;

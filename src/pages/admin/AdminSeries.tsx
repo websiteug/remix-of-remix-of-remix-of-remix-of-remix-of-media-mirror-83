@@ -33,6 +33,7 @@ export default function AdminSeries() {
     seasons: "1",
     displayCategories: [] as string[],
     isFeatured: false,
+    vjName: "",
   });
 
   useEffect(() => {
@@ -58,6 +59,7 @@ export default function AdminSeries() {
       seasons: "1",
       displayCategories: [],
       isFeatured: false,
+      vjName: "",
     });
     setEditingSeries(null);
   };
@@ -75,6 +77,7 @@ export default function AdminSeries() {
       seasons: item.seasonLabel || String(item.seasons),
       displayCategories: item.displayCategories || [],
       isFeatured: item.isFeatured,
+      vjName: item.vjName || "",
     });
     setDialogOpen(true);
   };
@@ -254,6 +257,16 @@ export default function AdminSeries() {
                     </Button>
                   ))}
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="vjName">VJ Name (optional)</Label>
+                <Input
+                  id="vjName"
+                  value={formData.vjName}
+                  onChange={(e) => setFormData({ ...formData, vjName: e.target.value })}
+                  placeholder="e.g. VJ Adamson"
+                />
               </div>
 
               <div className="flex items-center gap-2">
