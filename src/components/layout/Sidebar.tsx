@@ -38,7 +38,17 @@ export function Sidebar() {
 
   return (
     <>
-      <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-56 bg-sidebar border-r border-sidebar-border">
+      <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-56 border-r border-sidebar-border relative overflow-hidden">
+        {/* Hexagonal background */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: 'url(/images/hero-bg.jpg)',
+            backgroundSize: '200px 200px',
+            backgroundRepeat: 'repeat',
+          }}
+        />
+        <div className="absolute inset-0 z-0 bg-sidebar/90" />
         {/* Logo */}
         <div className="flex items-center gap-2 px-6 py-4 border-b border-sidebar-border">
           <img 
