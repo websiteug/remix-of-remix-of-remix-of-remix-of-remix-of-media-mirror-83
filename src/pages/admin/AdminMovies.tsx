@@ -65,6 +65,7 @@ export default function AdminMovies() {
       displayCategories: [],
       isFeatured: false,
       isAgent: false,
+      vjName: "",
     });
     setEditingMovie(null);
   };
