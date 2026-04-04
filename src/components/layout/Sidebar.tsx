@@ -50,7 +50,7 @@ export function Sidebar() {
         />
         <div className="absolute inset-0 z-0 bg-sidebar/90" />
         {/* Logo */}
-        <div className="flex items-center gap-2 px-6 py-4 border-b border-sidebar-border">
+        <div className="flex items-center gap-2 px-6 py-4 border-b border-sidebar-border relative z-10">
           <img 
             src={luoAncientLogo} 
             alt="Luo Ancient Movies" 
