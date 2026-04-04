@@ -40,6 +40,9 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
   // Check if series has agent episodes (shows NEW badge)
   const hasAgentEpisode = isSeries && 'hasAgentEpisode' in movie && (movie as Series).hasAgentEpisode;
   
+  // Get VJ name
+  const vjName = 'vjName' in movie ? (movie as any).vjName : undefined;
+  
   // Get the correct URL based on content type, include episode info if available
   const watchUrl = isSeries 
     ? episodeInfo 
