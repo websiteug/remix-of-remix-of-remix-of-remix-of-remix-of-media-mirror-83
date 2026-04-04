@@ -114,7 +114,7 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           
           {/* LUO Badge */}
-          <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
+          <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10">
             LUO
           </div>
           
