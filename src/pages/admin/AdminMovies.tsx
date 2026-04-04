@@ -85,6 +85,7 @@ export default function AdminMovies() {
       displayCategories: movie.displayCategories || [],
       isFeatured: movie.isFeatured,
       isAgent: movie.isAgent || false,
+      vjName: movie.vjName || "",
     });
     setDialogOpen(true);
   };
