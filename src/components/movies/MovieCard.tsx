@@ -141,7 +141,7 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
             >
               <Play className="w-6 h-6 text-white fill-white ml-0.5" />
             </div>
-            <span className="text-white text-xs font-medium mt-2 drop-shadow-lg">Play Now</span>
+            <span className="text-white text-[10px] md:text-xs font-medium mt-2 drop-shadow-lg">Play Now</span>
           </div>
           
           <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
