@@ -114,21 +114,21 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           
           {/* LUO Badge */}
-          <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
+          <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10">
             LUO
           </div>
           
           {/* Agent Badge */}
           {isAgent && (
-            <div className="absolute top-2 right-2 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 z-10">
-              <Shield className="w-3 h-3" />
+             <div className="absolute top-2 right-2 bg-orange-500 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full flex items-center gap-1 z-10">
+              <Shield className="w-2.5 h-2.5 md:w-3 md:h-3" />
               AGENT
             </div>
           )}
           
           {/* NEW Badge for series with agent episodes */}
           {hasAgentEpisode && (
-            <div className="absolute top-2 right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10 animate-pulse">
+            <div className="absolute top-2 right-2 bg-green-500 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10 animate-pulse">
               NEW
             </div>
           )}
@@ -141,38 +141,38 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
             >
               <Play className="w-6 h-6 text-white fill-white ml-0.5" />
             </div>
-            <span className="text-white text-xs font-medium mt-2 drop-shadow-lg">Play Now</span>
+            <span className="text-white text-[10px] md:text-xs font-medium mt-2 drop-shadow-lg">Play Now</span>
           </div>
           
           <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
             <div className="flex items-center gap-1">
               <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-              <span className="text-xs font-medium">{movie.rating}</span>
+              <span className="text-[10px] md:text-xs font-medium">{movie.rating}</span>
             </div>
           </div>
           {/* Episode Badge (S2 E3) */}
           {episodeInfo && (
             <div className="absolute bottom-2 left-2 flex gap-1 z-10">
-              <span className="bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded">
+              <span className="bg-primary text-primary-foreground text-[8px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded">
                 {episodeInfo.seasonLabel || `S${episodeInfo.seasonNumber}`}
               </span>
-              <span className="bg-accent text-accent-foreground text-[10px] font-bold px-1.5 py-0.5 rounded">
+              <span className="bg-accent text-accent-foreground text-[8px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded">
                 E{episodeInfo.episodeNumber}
               </span>
             </div>
           )}
           {/* VJ Badge */}
           {vjName && (
-            <div className={`absolute ${(isAgent || hasAgentEpisode) ? 'top-9' : 'top-2'} right-2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10`}>
+            <div className={`absolute ${(isAgent || hasAgentEpisode) ? 'top-9' : 'top-2'} right-2 bg-purple-600 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10`}>
               {vjName}
             </div>
           )}
         </div>
         <div className="mt-2">
-          <h3 className="text-sm font-medium truncate group-hover:text-primary transition-colors">
+          <h3 className="text-xs md:text-sm font-medium truncate group-hover:text-primary transition-colors">
             {episodeInfo ? episodeInfo.episodeTitle : movie.title}
           </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5">
             {episodeInfo ? `${movie.title} • ${episodeInfo.seasonLabel || `S${episodeInfo.seasonNumber}`}E${episodeInfo.episodeNumber}` : `${year} • Trending`}
           </p>
         </div>
