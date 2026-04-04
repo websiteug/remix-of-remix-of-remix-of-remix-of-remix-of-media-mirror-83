@@ -33,6 +33,7 @@ export default function AdminSeries() {
     seasons: "1",
     displayCategories: [] as string[],
     isFeatured: false,
+    vjName: "",
   });
 
   useEffect(() => {
