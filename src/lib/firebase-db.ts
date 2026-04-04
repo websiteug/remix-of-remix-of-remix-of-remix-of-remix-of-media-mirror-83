@@ -18,6 +18,7 @@ export interface Movie {
   isFeatured: boolean;
   isAgent?: boolean;
   agentMarkedAt?: number;
+  vjName?: string;
   createdAt: number;
   views?: number;
 }

@@ -37,6 +37,7 @@ export default function AdminMovies() {
     displayCategories: [] as string[],
     isFeatured: false,
     isAgent: false,
+    vjName: "",
   });
 
   useEffect(() => {
