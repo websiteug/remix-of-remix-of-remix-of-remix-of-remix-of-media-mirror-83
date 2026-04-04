@@ -147,7 +147,7 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
           <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
             <div className="flex items-center gap-1">
               <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-              <span className="text-xs font-medium">{movie.rating}</span>
+              <span className="text-[10px] md:text-xs font-medium">{movie.rating}</span>
             </div>
           </div>
           {/* Episode Badge (S2 E3) */}
