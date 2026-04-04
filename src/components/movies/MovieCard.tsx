@@ -163,7 +163,7 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
           )}
           {/* VJ Badge */}
           {vjName && (
-            <div className={`absolute ${(isAgent || hasAgentEpisode) ? 'top-9' : 'top-2'} right-2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10`}>
+            <div className={`absolute ${(isAgent || hasAgentEpisode) ? 'top-9' : 'top-2'} right-2 bg-purple-600 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10`}>
               {vjName}
             </div>
           )}
