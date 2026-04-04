@@ -120,15 +120,15 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
           
           {/* Agent Badge */}
           {isAgent && (
-            <div className="absolute top-2 right-2 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 z-10">
-              <Shield className="w-3 h-3" />
+             <div className="absolute top-2 right-2 bg-orange-500 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full flex items-center gap-1 z-10">
+              <Shield className="w-2.5 h-2.5 md:w-3 md:h-3" />
               AGENT
             </div>
           )}
           
           {/* NEW Badge for series with agent episodes */}
           {hasAgentEpisode && (
-            <div className="absolute top-2 right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10 animate-pulse">
+            <div className="absolute top-2 right-2 bg-green-500 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10 animate-pulse">
               NEW
             </div>
           )}
