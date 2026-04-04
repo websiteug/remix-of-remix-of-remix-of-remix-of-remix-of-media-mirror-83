@@ -35,6 +35,7 @@ export interface Series {
   seasons: number;
   displayCategories: string[];
   isFeatured: boolean;
+  vjName?: string;
   createdAt: number;
   views?: number;
   hasAgentEpisode?: boolean;

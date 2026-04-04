@@ -161,10 +161,10 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
               </span>
             </div>
           )}
-          {/* Season badge (only if no episode info) */}
-          {!episodeInfo && isSeries && seasons && (
-            <div className={`absolute ${hasAgentEpisode ? 'top-9' : 'top-2'} right-2 bg-primary/90 text-primary-foreground text-xs font-medium px-1.5 py-0.5 rounded`}>
-              S{seasons}
+          {/* VJ Badge */}
+          {vjName && (
+            <div className={`absolute ${(isAgent || hasAgentEpisode) ? 'top-9' : 'top-2'} right-2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10`}>
+              {vjName}
             </div>
           )}
         </div>

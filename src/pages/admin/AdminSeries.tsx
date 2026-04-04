@@ -259,6 +259,16 @@ export default function AdminSeries() {
                 </div>
               </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="vjName">VJ Name (optional)</Label>
+                <Input
+                  id="vjName"
+                  value={formData.vjName}
+                  onChange={(e) => setFormData({ ...formData, vjName: e.target.value })}
+                  placeholder="e.g. VJ Adamson"
+                />
+              </div>
+
               <div className="flex items-center gap-2">
                 <Switch
                   id="isFeatured"
