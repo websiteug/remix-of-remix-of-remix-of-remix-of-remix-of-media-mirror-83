@@ -77,6 +77,7 @@ export default function AdminSeries() {
       seasons: item.seasonLabel || String(item.seasons),
       displayCategories: item.displayCategories || [],
       isFeatured: item.isFeatured,
+      vjName: item.vjName || "",
     });
     setDialogOpen(true);
   };
