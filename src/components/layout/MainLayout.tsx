@@ -16,9 +16,9 @@ export function MainLayout({ children }: MainLayoutProps) {
         className="fixed inset-0 z-0"
         style={{
           backgroundImage: 'url(/images/hero-bg.jpg)',
-          backgroundSize: 'cover',
+          backgroundSize: '300px 300px',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          backgroundRepeat: 'repeat',
           backgroundAttachment: 'fixed',
         }}
       />
