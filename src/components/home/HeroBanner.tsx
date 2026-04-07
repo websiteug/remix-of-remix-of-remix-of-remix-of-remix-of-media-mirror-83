@@ -111,7 +111,6 @@ export function HeroBanner() {
           src={current.kind === "content" ? current.data.posterUrl : current.data.imageUrl}
           alt={current.data.title}
           className="w-full h-full object-cover"
-          style={{ imageRendering: 'auto', filter: 'contrast(1.05) brightness(1.03) saturate(1.1)' }}
           onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
         />
       </div>

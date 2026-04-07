@@ -107,7 +107,6 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
             src={posterUrl}
             alt={movie.title}
             className="w-full h-full object-cover transition-transform group-hover:scale-110"
-            style={{ imageRendering: 'auto', filter: 'contrast(1.05) brightness(1.02) saturate(1.1)' }}
             onError={(e) => {
               e.currentTarget.src = '/placeholder.svg';
             }}

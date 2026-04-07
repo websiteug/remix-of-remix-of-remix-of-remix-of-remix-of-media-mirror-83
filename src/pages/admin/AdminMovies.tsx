@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
-import { EnhanceImageButton } from "@/components/admin/EnhanceImageButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { getMovies, type Movie } from "@/lib/firebase-db";
@@ -196,19 +195,13 @@ export default function AdminMovies() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="posterUrl">Poster URL</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="posterUrl"
-                      type="url"
-                      value={formData.posterUrl}
-                      onChange={(e) => setFormData({ ...formData, posterUrl: e.target.value })}
-                      required
-                    />
-                    <EnhanceImageButton
-                      imageUrl={formData.posterUrl}
-                      onEnhanced={(url) => setFormData({ ...formData, posterUrl: url })}
-                    />
-                  </div>
+                  <Input
+                    id="posterUrl"
+                    type="url"
+                    value={formData.posterUrl}
+                    onChange={(e) => setFormData({ ...formData, posterUrl: e.target.value })}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="videoUrl">Video URL</Label>
