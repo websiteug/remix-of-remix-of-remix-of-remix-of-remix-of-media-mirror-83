@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { EnhanceImageButton } from "@/components/admin/EnhanceImageButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { getMovies, type Movie } from "@/lib/firebase-db";
