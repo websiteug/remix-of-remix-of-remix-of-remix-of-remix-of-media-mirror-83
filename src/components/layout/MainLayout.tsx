@@ -36,9 +36,9 @@ export function MainLayout({ children }: MainLayoutProps) {
         className="fixed inset-0 z-0 transition-all duration-1000"
         style={{
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: '300px 300px',
+          backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'repeat',
+          backgroundRepeat: 'no-repeat',
           backgroundAttachment: 'fixed',
         }}
       />
