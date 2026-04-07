@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { EnhanceImageButton } from "@/components/admin/EnhanceImageButton";
 import { useToast } from "@/hooks/use-toast";
 import { getSeries, type Series } from "@/lib/firebase-db";
 import { createSeries, updateSeries, deleteSeries } from "@/lib/admin-db";
@@ -189,13 +190,19 @@ export default function AdminSeries() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="posterUrl">Poster URL</Label>
-                  <Input
-                    id="posterUrl"
-                    type="url"
-                    value={formData.posterUrl}
-                    onChange={(e) => setFormData({ ...formData, posterUrl: e.target.value })}
-                    required
-                  />
+                  <div className="flex gap-2">
+                    <Input
+                      id="posterUrl"
+                      type="url"
+                      value={formData.posterUrl}
+                      onChange={(e) => setFormData({ ...formData, posterUrl: e.target.value })}
+                      required
+                    />
+                    <EnhanceImageButton
+                      imageUrl={formData.posterUrl}
+                      onEnhanced={(url) => setFormData({ ...formData, posterUrl: url })}
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="trailerUrl">Trailer URL (optional)</Label>

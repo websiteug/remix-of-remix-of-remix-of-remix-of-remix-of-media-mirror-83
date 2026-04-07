@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Upload, Loader2 } from "lucide-react";
+import { EnhanceImageButton } from "@/components/admin/EnhanceImageButton";
 import { useToast } from "@/hooks/use-toast";
 import { getHeroImages, type HeroImage } from "@/lib/firebase-db";
 import { createHeroImage, updateHeroImage, deleteHeroImage } from "@/lib/admin-db";
@@ -181,6 +182,10 @@ export default function AdminHeroSlides() {
                     onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                     placeholder="Paste URL or upload below"
                     required
+                  />
+                  <EnhanceImageButton
+                    imageUrl={formData.imageUrl}
+                    onEnhanced={(url) => setFormData({ ...formData, imageUrl: url })}
                   />
                 </div>
                 <input
