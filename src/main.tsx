@@ -18,7 +18,11 @@ if ('serviceWorker' in navigator) {
     window.location.reload();
   });
 
-  // Check for updates every 5 minutes
+  // Check for updates immediately on load, then every 5 minutes
+  navigator.serviceWorker.getRegistration().then((reg) => {
+    if (reg) reg.update();
+  });
+
   setInterval(() => {
     navigator.serviceWorker.getRegistration().then((reg) => {
       if (reg) reg.update();
