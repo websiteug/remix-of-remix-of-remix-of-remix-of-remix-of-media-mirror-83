@@ -3,19 +3,39 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { MobileNav } from "./MobileNav";
 import { InstallAppButton } from "@/components/InstallAppButton";
+import { useState, useEffect } from "react";
+
+function getUgandaBackground() {
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const ugandaTime = new Date(utc + 3 * 60 * 60000);
+  const hour = ugandaTime.getHours();
+  if (hour >= 5 && hour < 12) return '/images/bg-morning.jpg';
+  if (hour >= 12 && hour < 17) return '/images/bg-afternoon.jpg';
+  return '/images/bg-evening.jpg';
+}
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const [bgImage, setBgImage] = useState(getUgandaBackground);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgImage(getUgandaBackground());
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen flex relative">
       {/* Background */}
       <div
-        className="fixed inset-0 z-0"
+        className="fixed inset-0 z-0 transition-all duration-1000"
         style={{
-          backgroundImage: 'url(/images/hero-bg.jpg)',
+          backgroundImage: `url(${bgImage})`,
           backgroundSize: '300px 300px',
           backgroundPosition: 'center',
           backgroundRepeat: 'repeat',
