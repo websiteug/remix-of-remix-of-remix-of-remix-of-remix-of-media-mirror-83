@@ -12,4 +12,18 @@ if (import.meta.env.PROD) {
   initContentProtection();
 }
 
+// Auto-reload when a new service worker version is detected
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
+
+  // Check for updates every 5 minutes
+  setInterval(() => {
+    navigator.serviceWorker.getRegistration().then((reg) => {
+      if (reg) reg.update();
+    });
+  }, 5 * 60 * 1000);
+}
+
 createRoot(document.getElementById("root")!).render(<App />);
