@@ -183,6 +183,10 @@ export default function AdminHeroSlides() {
                     placeholder="Paste URL or upload below"
                     required
                   />
+                  <EnhanceImageButton
+                    imageUrl={formData.imageUrl}
+                    onEnhanced={(url) => setFormData({ ...formData, imageUrl: url })}
+                  />
                 </div>
                 <input
                   ref={fileInputRef}
