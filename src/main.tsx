@@ -18,16 +18,16 @@ if ('serviceWorker' in navigator) {
     window.location.reload();
   });
 
-  // Check for updates every 2 minutes
-  setTimeout(() => {
-    const checkForUpdates = () => {
-      navigator.serviceWorker.getRegistration().then((reg) => {
-        if (reg) reg.update();
-      });
-    };
-    checkForUpdates();
-    setInterval(checkForUpdates, 2 * 60 * 1000);
-  }, 2 * 60 * 1000);
+  // Check for updates immediately on load, then every 5 minutes
+  navigator.serviceWorker.getRegistration().then((reg) => {
+    if (reg) reg.update();
+  });
+
+  setInterval(() => {
+    navigator.serviceWorker.getRegistration().then((reg) => {
+      if (reg) reg.update();
+    });
+  }, 5 * 60 * 1000);
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
