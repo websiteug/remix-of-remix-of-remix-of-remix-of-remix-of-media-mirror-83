@@ -7,9 +7,7 @@ import { useState, useEffect } from "react";
 
 function getUgandaBackground() {
   const now = new Date();
-  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-  const ugandaTime = new Date(utc + 3 * 60 * 60000);
-  const hour = ugandaTime.getHours();
+  const hour = (now.getUTCHours() + 3) % 24;
   if (hour >= 5 && hour < 12) return '/images/bg-morning.jpg';
   if (hour >= 12 && hour < 17) return '/images/bg-afternoon.jpg';
   return '/images/bg-evening.jpg';
