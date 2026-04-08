@@ -18,16 +18,24 @@ if ('serviceWorker' in navigator) {
     window.location.reload();
   });
 
-  // Check for updates immediately on load, then every 5 minutes
-  navigator.serviceWorker.getRegistration().then((reg) => {
-    if (reg) reg.update();
-  });
+  const LAST_CHECK_KEY = 'sw-last-update-check';
+  const ONE_DAY = 24 * 60 * 60 * 1000;
 
-  setInterval(() => {
-    navigator.serviceWorker.getRegistration().then((reg) => {
-      if (reg) reg.update();
-    });
-  }, 5 * 60 * 1000);
+  const shouldCheck = () => {
+    const last = localStorage.getItem(LAST_CHECK_KEY);
+    if (!last) return true;
+    return Date.now() - Number(last) >= ONE_DAY;
+  };
+
+  // Check after 2 minutes, but only once per day
+  setTimeout(() => {
+    if (shouldCheck()) {
+      navigator.serviceWorker.getRegistration().then((reg) => {
+        if (reg) reg.update();
+        localStorage.setItem(LAST_CHECK_KEY, String(Date.now()));
+      });
+    }
+  }, 2 * 60 * 1000);
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
