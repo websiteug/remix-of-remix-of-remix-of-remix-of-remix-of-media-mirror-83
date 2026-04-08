@@ -5,9 +5,8 @@ import { ContentSection } from "@/components/home/ContentSection";
 
 function getUgandaGreeting() {
   const now = new Date();
-  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-  const ugandaTime = new Date(utc + 3 * 60 * 60000);
-  const hour = ugandaTime.getHours();
+  // Get UTC hours directly, then add 3 for Uganda (EAT = UTC+3)
+  const hour = (now.getUTCHours() + 3) % 24;
   if (hour >= 5 && hour < 12) return '☀️ GOOD MORNING ☀️';
   if (hour >= 12 && hour < 17) return '🌤️ GOOD AFTERNOON 🌤️';
   return '🌙 GOOD EVENING 🌙';
