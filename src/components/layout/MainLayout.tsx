@@ -16,7 +16,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <div
         className="fixed inset-0 z-0 transition-all duration-1000"
         style={{
-          backgroundImage: `url(${bgImage})`,
+          backgroundImage: `url(/images/bg-main.jpg)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
