@@ -11,7 +11,7 @@ const Index = () => {
           <div
             className="absolute whitespace-nowrap flex gap-[33vw]"
             style={{
-              animation: "marquee-continuous 18s linear infinite, easter-blink-fade 18s ease-in-out infinite",
+              animation: "marquee-continuous 35s linear infinite, easter-blink-fade 35s ease-in-out infinite",
             }}
           >
             {[0, 1, 2].map((i) => (
