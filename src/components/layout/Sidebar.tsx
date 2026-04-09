@@ -11,6 +11,7 @@ import {
   Star,
   Shield,
   UserCheck,
+  Music,
 } from "lucide-react";
 import luoAncientLogo from "@/assets/luo-ancient-logo.png";
 import { SubscriptionModal } from "@/components/subscription/SubscriptionModal";
@@ -21,6 +22,7 @@ const navItems = [
   { title: "Home", href: "/", icon: Home },
   { title: "Movies", href: "/movies", icon: Film },
   { title: "TV Series", href: "/tv-series", icon: Tv },
+  { title: "Music", href: "https://luomusic.luoancientmovies.com/", icon: Music, external: true },
   { title: "Agent", href: "/agent", icon: UserCheck },
   { title: "Guide", href: "/adverts", icon: Megaphone },
   { title: "Apps", href: "/apps", icon: Download },
@@ -57,6 +59,21 @@ export function Sidebar() {
             {navItems.map((item) => {
               const isActive = location.pathname === item.href;
               const Icon = item.icon;
+              if ((item as any).external) {
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => track("Navigate", `Navigated to ${item.title}`, item.href)}
+                    className="nav-link nav-link-inactive"
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span className="text-sm">{item.title}</span>
+                  </a>
+                );
+              }
               return (
                 <Link
                   key={item.href}
