@@ -28,7 +28,7 @@ export function MobileNav() {
             const isActive = location.pathname === item.href;
             const Icon = item.icon;
             return (
-              {(item as any).external ? (
+              item.external ? (
                 <a
                   key={item.href}
                   href={item.href}
@@ -50,7 +50,7 @@ export function MobileNav() {
                   <Icon className="w-5 h-5" />
                   <span className="text-xs font-medium">{item.title}</span>
                 </Link>
-              )}
+              )
             );
           })}
           
