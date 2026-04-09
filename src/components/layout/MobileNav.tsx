@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, Film, Tv, UserCheck, Megaphone, Shield } from "lucide-react";
+import { Home, Film, Tv, UserCheck, Music, Shield } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 
 export function MobileNav() {
@@ -16,8 +16,8 @@ export function MobileNav() {
     { title: "Home", href: "/", icon: Home },
     { title: "Movies", href: "/movies", icon: Film },
     { title: "TV", href: "/tv-series", icon: Tv },
+    { title: "Music", href: "https://luomusic.luoancientmovies.com/", icon: Music, external: true },
     { title: "Agent", href: "/agent", icon: UserCheck },
-    { title: "Guide", href: "/adverts", icon: Megaphone },
   ];
 
   return (
@@ -28,16 +28,29 @@ export function MobileNav() {
             const isActive = location.pathname === item.href;
             const Icon = item.icon;
             return (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors relative ${
-                  isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-                <span className="text-xs font-medium">{item.title}</span>
-              </Link>
+              {(item as any).external ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors relative text-muted-foreground hover:text-foreground"
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="text-xs font-medium">{item.title}</span>
+                </a>
+              ) : (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors relative ${
+                    isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="text-xs font-medium">{item.title}</span>
+                </Link>
+              )}
             );
           })}
           
