@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, Film, Tv, UserCheck, Music, Shield } from "lucide-react";
+import { Home, Film, Tv, UserCheck, Music, Megaphone, Shield } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 
 export function MobileNav() {
@@ -17,6 +17,7 @@ export function MobileNav() {
     { title: "Movies", href: "/movies", icon: Film },
     { title: "TV", href: "/tv-series", icon: Tv },
     { title: "Music", href: "https://luomusic.luoancientmovies.com/", icon: Music, external: true },
+    { title: "Guide", href: "/adverts", icon: Megaphone },
     { title: "Agent", href: "/agent", icon: UserCheck },
   ];
 
