@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, Film, Tv, UserCheck, Music, Shield } from "lucide-react";
+import { Home, Film, Tv, UserCheck, Music, Megaphone, Shield } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 
 export function MobileNav() {
