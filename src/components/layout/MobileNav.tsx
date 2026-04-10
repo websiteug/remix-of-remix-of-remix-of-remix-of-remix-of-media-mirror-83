@@ -17,6 +17,7 @@ export function MobileNav() {
     { title: "Movies", href: "/movies", icon: Film },
     { title: "TV", href: "/tv-series", icon: Tv },
     { title: "Music", href: "https://luomusic.luoancientmovies.com/", icon: Music, external: true },
+    { title: "Guide", href: "/adverts", icon: Megaphone },
     { title: "Agent", href: "/agent", icon: UserCheck },
   ];
 
