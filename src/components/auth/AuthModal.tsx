@@ -87,18 +87,17 @@ export function AuthModal({ open, onOpenChange, defaultMode = "login" }: AuthMod
     }
   };
 
-  const handleGoogleLogin = async () => {
-    // Call signInWithPopup IMMEDIATELY on click — no state updates before it
-    // Browsers block popups if the user-gesture chain is broken by a re-render
-    const success = await loginWithGoogle();
-    
-    if (success) {
-      trackActivity({ userId: "google-user", userName: "Google User", userEmail: "", action: "Login", details: "User logged in via Google", page: window.location.pathname });
-      toast({ title: "Welcome!", description: "Signed in with Google successfully." });
-      handleClose();
-    } else {
-      toast({ title: "Google login failed", variant: "destructive" });
-    }
+  const handleGoogleLogin = () => {
+    // Fire popup synchronously inside the click handler — no awaits, no state updates first
+    loginWithGoogle().then((success) => {
+      if (success) {
+        trackActivity({ userId: "google-user", userName: "Google User", userEmail: "", action: "Login", details: "User logged in via Google", page: window.location.pathname });
+        toast({ title: "Welcome!", description: "Signed in with Google successfully." });
+        handleClose();
+      } else {
+        toast({ title: "Google login failed", variant: "destructive" });
+      }
+    });
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {
