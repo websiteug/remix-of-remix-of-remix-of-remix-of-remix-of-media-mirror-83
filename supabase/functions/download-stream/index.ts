@@ -1,24 +1,37 @@
 import { fsGet, fsAtomicMarkUsed } from "../_shared/firebase-admin.ts";
 
 const REDIRECT_URL = "https://www.luoancientmovies.com";
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
 
 function expiredHtml() {
   return `<!doctype html><html><head><meta charset="utf-8"><title>Link expired</title>
 <meta http-equiv="refresh" content="2;url=${REDIRECT_URL}">
 <style>body{font-family:system-ui,sans-serif;background:#0b0b0f;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center}a{color:#3b82f6}</style>
-</head><body><div><h1>Download link expired</h1><p>This one-time link has already been used or has expired.</p><p>Redirecting to <a href="${REDIRECT_URL}">${REDIRECT_URL}</a>…</p></div></body></html>`;
+</head><body><div><h1>Download link expired</h1><p>This one-time link has already been used or has expired.</p><p>Redirecting to <a href="${REDIRECT_URL}">${REDIRECT_URL}</a>...</p><script>setTimeout(function(){location.href='${REDIRECT_URL}'},2000)</script></div></body></html>`;
 }
 
 function expired() {
   return new Response(expiredHtml(), {
     status: 410,
-    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+    headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
   });
 }
 
 Deno.serve(async (req) => {
-  const url = new URL(req.url);
-  const token = url.searchParams.get("token");
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method !== "POST") return expired();
+
+  let token = "";
+  try {
+    const form = await req.formData();
+    token = String(form.get("token") || "");
+  } catch {
+    token = "";
+  }
   if (!token) return expired();
 
   try {

@@ -32,7 +32,6 @@ import {
   type Episode,
   isMovieInAgentMode,
 } from "@/lib/firebase-db";
-import { getFileIdFromUrl, isDirectVideoUrl, getGoogleDriveDownloadUrl } from "@/lib/download-service";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
 import { SubscriptionRequired } from "@/components/subscription/SubscriptionRequired";
@@ -41,6 +40,39 @@ import { AuthModal } from "@/components/auth/AuthModal";
 import playingIndicator from "@/assets/playing-indicator.webp";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { supabase } from "@/integrations/supabase/client";
+
+function startHiddenPostDownload(action: string, token: string, filename: string) {
+  const frameName = "download-frame";
+  let frame = document.querySelector<HTMLIFrameElement>(`iframe[name="${frameName}"]`);
+  if (!frame) {
+    frame = document.createElement("iframe");
+    frame.name = frameName;
+    frame.style.display = "none";
+    document.body.appendChild(frame);
+  }
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = action;
+  form.target = frameName;
+  form.style.display = "none";
+
+  const tokenInput = document.createElement("input");
+  tokenInput.type = "hidden";
+  tokenInput.name = "token";
+  tokenInput.value = token;
+  form.appendChild(tokenInput);
+
+  const filenameInput = document.createElement("input");
+  filenameInput.type = "hidden";
+  filenameInput.name = "filename";
+  filenameInput.value = filename;
+  form.appendChild(filenameInput);
+
+  document.body.appendChild(form);
+  form.submit();
+  form.remove();
+}
 
 export default function WatchPage() {
   const { id, seriesId } = useParams();
@@ -230,22 +262,17 @@ export default function WatchPage() {
         },
       });
 
-      if (error || !data?.downloadUrl) {
+      if (error || !data?.downloadUrl || !data?.token) {
         toast({ title: "Download failed", description: "Could not generate download link.", variant: "destructive" });
         setIsDownloading(false);
         return;
       }
 
-      // Trigger browser download via the backend stream URL (one-time token)
-      const a = document.createElement("a");
-      a.href = data.downloadUrl;
-      a.download = data.filename || `${filename}.mp4`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      // Submit token by hidden POST so the page does not navigate and copied GET links expire.
+      startHiddenPostDownload(data.downloadUrl, data.token, data.filename || `${filename}.mp4`);
 
       toast({ title: "Download started!", description: `Downloading ${data.filename || filename + ".mp4"}` });
-      setIsDownloading(false);
+      window.setTimeout(() => setIsDownloading(false), 1500);
     } catch (error) {
       console.error("Download error:", error);
       toast({

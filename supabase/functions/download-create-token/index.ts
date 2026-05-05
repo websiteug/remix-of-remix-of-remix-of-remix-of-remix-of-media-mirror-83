@@ -69,9 +69,9 @@ Deno.serve(async (req) => {
     });
 
     const projectRef = Deno.env.get("SUPABASE_URL") || "";
-    const downloadUrl = `${projectRef}/functions/v1/download-stream?token=${token}&filename=${encodeURIComponent(filename)}`;
+    const downloadUrl = `${projectRef}/functions/v1/download-stream`;
 
-    return new Response(JSON.stringify({ downloadUrl, filename }), {
+    return new Response(JSON.stringify({ downloadUrl, token, filename }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
