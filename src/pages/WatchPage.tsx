@@ -40,6 +40,7 @@ import { SubscriptionModal } from "@/components/subscription/SubscriptionModal";
 import { AuthModal } from "@/components/auth/AuthModal";
 import playingIndicator from "@/assets/playing-indicator.webp";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function WatchPage() {
   const { id, seriesId } = useParams();
@@ -225,7 +226,7 @@ export default function WatchPage() {
           contentId: currentContent?.id || id || "unknown",
           contentTitle: filename,
           videoUrl: rawVideoUrl,
-          userId: user?.uid || "",
+          userId: (user as any)?.uid || (user as any)?.id || "",
         },
       });
 
