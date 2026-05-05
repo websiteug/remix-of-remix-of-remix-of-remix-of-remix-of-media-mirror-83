@@ -32,7 +32,6 @@ import {
   type Episode,
   isMovieInAgentMode,
 } from "@/lib/firebase-db";
-import { getFileIdFromUrl, isDirectVideoUrl, getGoogleDriveDownloadUrl } from "@/lib/download-service";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
 import { SubscriptionRequired } from "@/components/subscription/SubscriptionRequired";
