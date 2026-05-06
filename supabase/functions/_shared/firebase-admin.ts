@@ -138,7 +138,6 @@ export async function fsAtomicMarkUsed(collection: string, docId: string): Promi
         },
         updateMask: { fieldPaths: ["used", "usedAt"] },
         currentDocument: { exists: true },
-        updateTransforms: [],
       },
     ],
   };
@@ -147,5 +146,6 @@ export async function fsAtomicMarkUsed(collection: string, docId: string): Promi
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
+  if (!res.ok) console.error(`fsAtomicMarkUsed failed: ${res.status} ${await res.text()}`);
   return res.ok;
 }
