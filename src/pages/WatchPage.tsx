@@ -41,26 +41,16 @@ import playingIndicator from "@/assets/playing-indicator.webp";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { supabase } from "@/integrations/supabase/client";
 
-async function streamDownloadViaPost(action: string, token: string, filename: string) {
-  const fd = new FormData();
-  fd.append("token", token);
-  fd.append("filename", filename);
+function startBackendDownload(action: string, token: string) {
+  const url = new URL(action);
+  url.searchParams.set("token", token);
 
-  const res = await fetch(action, { method: "POST", body: fd });
-  if (!res.ok || !res.body) {
-    throw new Error(`Download failed (${res.status})`);
-  }
-
-  const blob = await res.blob();
-  const blobUrl = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = blobUrl;
-  a.download = filename;
-  a.style.display = "none";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+  const iframe = document.createElement("iframe");
+  iframe.src = url.toString();
+  iframe.style.display = "none";
+  iframe.setAttribute("aria-hidden", "true");
+  document.body.appendChild(iframe);
+  window.setTimeout(() => iframe.remove(), 120_000);
 }
 
 export default function WatchPage() {
@@ -241,7 +231,7 @@ export default function WatchPage() {
       setIsDownloading(true);
       const filename = getDownloadFilename();
 
-      // Request a one-time token from backend; backend streams the file
+      // Request a one-time token from backend; browser downloads from backend endpoint
       const { data, error } = await supabase.functions.invoke("download-create-token", {
         body: {
           contentId: currentContent?.id || id || "unknown",
@@ -257,12 +247,11 @@ export default function WatchPage() {
         return;
       }
 
-      // Stream via POST and force browser download manager via blob anchor
       const dlName = data.filename || `${filename}.mp4`;
-      await streamDownloadViaPost(data.downloadUrl, data.token, dlName);
+      startBackendDownload(data.downloadUrl, data.token);
 
       toast({ title: "Download started!", description: `Downloading ${dlName}` });
-      setIsDownloading(false);
+      window.setTimeout(() => setIsDownloading(false), 1500);
     } catch (error) {
       console.error("Download error:", error);
       toast({
