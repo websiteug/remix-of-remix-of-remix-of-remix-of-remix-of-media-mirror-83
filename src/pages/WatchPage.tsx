@@ -32,6 +32,7 @@ import {
   type Episode,
   isMovieInAgentMode,
 } from "@/lib/firebase-db";
+import { getFileIdFromUrl, isDirectVideoUrl, getGoogleDriveDownloadUrl } from "@/lib/download-service";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
 import { SubscriptionRequired } from "@/components/subscription/SubscriptionRequired";
@@ -39,19 +40,6 @@ import { SubscriptionModal } from "@/components/subscription/SubscriptionModal";
 import { AuthModal } from "@/components/auth/AuthModal";
 import playingIndicator from "@/assets/playing-indicator.webp";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
-import { supabase } from "@/integrations/supabase/client";
-
-function startBackendDownload(action: string, token: string) {
-  const url = new URL(action);
-  url.searchParams.set("token", token);
-
-  const iframe = document.createElement("iframe");
-  iframe.src = url.toString();
-  iframe.style.display = "none";
-  iframe.setAttribute("aria-hidden", "true");
-  document.body.appendChild(iframe);
-  window.setTimeout(() => iframe.remove(), 120_000);
-}
 
 export default function WatchPage() {
   const { id, seriesId } = useParams();
@@ -231,27 +219,66 @@ export default function WatchPage() {
       setIsDownloading(true);
       const filename = getDownloadFilename();
 
-      // Request a one-time token from backend; browser downloads from backend endpoint
-      const { data, error } = await supabase.functions.invoke("download-create-token", {
-        body: {
-          contentId: currentContent?.id || id || "unknown",
-          contentTitle: filename,
-          videoUrl: rawVideoUrl,
-          userId: (user as any)?.uid || (user as any)?.id || "",
-        },
-      });
+      // For direct video URLs, download directly
+      if (isDirectVideoUrl(rawVideoUrl)) {
+        const link = document.createElement("a");
+        link.href = rawVideoUrl;
+        link.download = `${filename}.mp4`;
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-      if (error || !data?.downloadUrl || !data?.token) {
-        toast({ title: "Download failed", description: "Could not generate download link.", variant: "destructive" });
+        toast({
+          title: "Download started!",
+          description: `Downloading ${filename}.mp4`,
+        });
         setIsDownloading(false);
         return;
       }
 
-      const dlName = data.filename || `${filename}.mp4`;
-      startBackendDownload(data.downloadUrl, data.token);
+      // For Google Drive URLs, try Cloudflare Worker first, fallback to direct Google Drive
+      const fileId = getFileIdFromUrl(rawVideoUrl);
+      if (!fileId) {
+        toast({
+          title: "Download failed",
+          description: "Invalid video URL.",
+          variant: "destructive",
+        });
+        setIsDownloading(false);
+        return;
+      }
 
-      toast({ title: "Download started!", description: `Downloading ${dlName}` });
-      window.setTimeout(() => setIsDownloading(false), 1500);
+      const safeFilename = `${filename.replace(/[^a-zA-Z0-9_\-. ]/g, '')}.mp4`;
+      const workerUrl = `https://download.w64301879.workers.dev/download?fileId=${fileId}&fileName=${encodeURIComponent(safeFilename)}`;
+      
+      // Try worker first with a HEAD/fetch check
+      try {
+        const checkResponse = await fetch(workerUrl, { method: 'HEAD' });
+        const contentType = checkResponse.headers.get('content-type') || '';
+        
+        // If worker returns JSON (error), fallback to direct Google Drive
+        if (contentType.includes('application/json') || !checkResponse.ok) {
+          console.log('Worker returned error, falling back to direct Google Drive');
+          const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
+          window.location.href = directUrl;
+        } else {
+          // Worker is streaming the file, use it
+          window.location.href = workerUrl;
+        }
+      } catch {
+        // Network error with worker, fallback to direct Google Drive
+        console.log('Worker unavailable, falling back to direct Google Drive');
+        const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
+        window.location.href = directUrl;
+      }
+
+      toast({
+        title: "Download started!",
+        description: `Downloading ${safeFilename}`,
+      });
+
+      setIsDownloading(false);
     } catch (error) {
       console.error("Download error:", error);
       toast({
