@@ -257,11 +257,12 @@ export default function WatchPage() {
         return;
       }
 
-      // Submit token by hidden POST so the page does not navigate and copied GET links expire.
-      startHiddenPostDownload(data.downloadUrl, data.token, data.filename || `${filename}.mp4`);
+      // Stream via POST and force browser download manager via blob anchor
+      const dlName = data.filename || `${filename}.mp4`;
+      await streamDownloadViaPost(data.downloadUrl, data.token, dlName);
 
-      toast({ title: "Download started!", description: `Downloading ${data.filename || filename + ".mp4"}` });
-      window.setTimeout(() => setIsDownloading(false), 1500);
+      toast({ title: "Download started!", description: `Downloading ${dlName}` });
+      setIsDownloading(false);
     } catch (error) {
       console.error("Download error:", error);
       toast({
