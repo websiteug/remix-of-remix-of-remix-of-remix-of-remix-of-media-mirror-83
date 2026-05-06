@@ -21,12 +21,18 @@ function expired() {
   });
 }
 
+function getTokenFromRequest(req: Request) {
+  const url = new URL(req.url);
+  const token = url.searchParams.get("token") || "";
+  const pathToken = url.pathname.split("/").pop() || "";
+  return token || (pathToken !== "download-stream" ? pathToken : "");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   if (req.method !== "GET") return expired();
 
-  const requestUrl = new URL(req.url);
-  const token = requestUrl.searchParams.get("token") || "";
+  const token = getTokenFromRequest(req);
   if (!token) return expired();
 
   try {
