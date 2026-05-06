@@ -127,7 +127,7 @@ export async function fsGet(collection: string, docId: string): Promise<Record<s
 export async function fsAtomicMarkUsed(collection: string, docId: string): Promise<boolean> {
   const token = await getAccessToken();
   // Use commit with conditional update transform
-  const commitUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default):commit`;
+  const commitUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents:commit`;
   const docName = `projects/${PROJECT_ID}/databases/(default)/documents/${collection}/${docId}`;
   const body = {
     writes: [
