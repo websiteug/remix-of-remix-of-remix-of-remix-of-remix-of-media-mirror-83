@@ -41,37 +41,26 @@ import playingIndicator from "@/assets/playing-indicator.webp";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { supabase } from "@/integrations/supabase/client";
 
-function startHiddenPostDownload(action: string, token: string, filename: string) {
-  const frameName = "download-frame";
-  let frame = document.querySelector<HTMLIFrameElement>(`iframe[name="${frameName}"]`);
-  if (!frame) {
-    frame = document.createElement("iframe");
-    frame.name = frameName;
-    frame.style.display = "none";
-    document.body.appendChild(frame);
+async function streamDownloadViaPost(action: string, token: string, filename: string) {
+  const fd = new FormData();
+  fd.append("token", token);
+  fd.append("filename", filename);
+
+  const res = await fetch(action, { method: "POST", body: fd });
+  if (!res.ok || !res.body) {
+    throw new Error(`Download failed (${res.status})`);
   }
 
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = action;
-  form.target = frameName;
-  form.style.display = "none";
-
-  const tokenInput = document.createElement("input");
-  tokenInput.type = "hidden";
-  tokenInput.name = "token";
-  tokenInput.value = token;
-  form.appendChild(tokenInput);
-
-  const filenameInput = document.createElement("input");
-  filenameInput.type = "hidden";
-  filenameInput.name = "filename";
-  filenameInput.value = filename;
-  form.appendChild(filenameInput);
-
-  document.body.appendChild(form);
-  form.submit();
-  form.remove();
+  const blob = await res.blob();
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = blobUrl;
+  a.download = filename;
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
 }
 
 export default function WatchPage() {
