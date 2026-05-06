@@ -45,13 +45,12 @@ function startBackendDownload(action: string, token: string) {
   const url = new URL(action);
   url.searchParams.set("token", token);
 
-  const a = document.createElement("a");
-  a.href = url.toString();
-  a.style.display = "none";
-  a.rel = "noopener";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+  const iframe = document.createElement("iframe");
+  iframe.src = url.toString();
+  iframe.style.display = "none";
+  iframe.setAttribute("aria-hidden", "true");
+  document.body.appendChild(iframe);
+  window.setTimeout(() => iframe.remove(), 120_000);
 }
 
 export default function WatchPage() {
