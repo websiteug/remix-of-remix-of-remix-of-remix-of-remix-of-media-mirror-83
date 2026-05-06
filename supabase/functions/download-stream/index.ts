@@ -4,7 +4,7 @@ const REDIRECT_URL = "https://www.luoancientmovies.com";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
 };
 
 function expiredHtml() {
@@ -23,15 +23,10 @@ function expired() {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-  if (req.method !== "POST") return expired();
+  if (req.method !== "GET") return expired();
 
-  let token = "";
-  try {
-    const form = await req.formData();
-    token = String(form.get("token") || "");
-  } catch {
-    token = "";
-  }
+  const requestUrl = new URL(req.url);
+  const token = requestUrl.searchParams.get("token") || "";
   if (!token) return expired();
 
   try {
@@ -54,7 +49,7 @@ Deno.serve(async (req) => {
       return expired();
     }
 
-    // Forward Range header so browsers can resume/seek if needed (single connection only)
+    // Backend fetches the real file URL and returns it as a download response.
     const upstream = await fetch(sourceUrl, {
       headers: req.headers.get("range") ? { Range: req.headers.get("range")! } : {},
       redirect: "follow",
