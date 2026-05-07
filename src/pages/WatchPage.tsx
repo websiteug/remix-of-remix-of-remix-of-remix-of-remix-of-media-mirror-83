@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import {
   Play,
   Volume2,
@@ -45,6 +45,7 @@ export default function WatchPage() {
   const { id, seriesId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const { hasActiveSubscription, hasAgentPlan, isLoading: subscriptionLoading } = useSubscription();
   const { track } = useActivityTracker();
@@ -61,7 +62,17 @@ export default function WatchPage() {
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [selectedEpisodeIndex, setSelectedEpisodeIndex] = useState(0);
-  
+
+  // Scroll to player when hash present and content loaded
+  useEffect(() => {
+    if (loading) return;
+    if (location.hash === "#video-player") {
+      setTimeout(() => {
+        const el = document.getElementById("video-player");
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 200);
+    }
+  }, [loading, location.hash, movie, series]);
 
   const isSeries = !!seriesId;
   const contentId = seriesId || id;
@@ -404,7 +415,7 @@ export default function WatchPage() {
           {/* Player Column */}
           <div className={`flex-1 ${isSeries ? "lg:pr-0" : ""}`}>
             {/* Video Container - Iframe Player */}
-            <div className="relative bg-black aspect-video">
+            <div id="video-player" className="relative bg-black aspect-video scroll-mt-20">
               {(() => {
                 const isAgent = movie && isMovieInAgentMode(movie);
                 const isAgentEpisode = isSeries && selectedEpisode?.isAgent;
