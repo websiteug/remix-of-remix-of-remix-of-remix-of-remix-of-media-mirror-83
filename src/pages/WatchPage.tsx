@@ -62,7 +62,17 @@ export default function WatchPage() {
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [selectedEpisodeIndex, setSelectedEpisodeIndex] = useState(0);
-  
+
+  // Scroll to player when hash present and content loaded
+  useEffect(() => {
+    if (loading) return;
+    if (location.hash === "#video-player") {
+      setTimeout(() => {
+        const el = document.getElementById("video-player");
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 200);
+    }
+  }, [loading, location.hash, movie, series]);
 
   const isSeries = !!seriesId;
   const contentId = seriesId || id;
