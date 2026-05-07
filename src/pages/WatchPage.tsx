@@ -246,7 +246,7 @@ export default function WatchPage() {
 
       // For direct video URLs, download directly via hidden iframe
       if (isDirectVideoUrl(rawVideoUrl)) {
-        await triggerHiddenDownload(rawVideoUrl, `${filename}.mp4`);
+        triggerHiddenDownload(rawVideoUrl);
 
         toast({
           title: "Download started!",
@@ -279,13 +279,13 @@ export default function WatchPage() {
         // If worker returns JSON (error), fallback to direct Google Drive
         if (contentType.includes('application/json') || !checkResponse.ok) {
           const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
-          await triggerHiddenDownload(directUrl, safeFilename);
+          triggerHiddenDownload(directUrl);
         } else {
-          await triggerHiddenDownload(workerUrl, safeFilename);
+          triggerHiddenDownload(workerUrl);
         }
       } catch {
         const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
-        await triggerHiddenDownload(directUrl, safeFilename);
+        triggerHiddenDownload(directUrl);
       }
 
       toast({
