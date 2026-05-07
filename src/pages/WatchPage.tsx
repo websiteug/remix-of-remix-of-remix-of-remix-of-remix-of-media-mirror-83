@@ -276,18 +276,14 @@ export default function WatchPage() {
         
         // If worker returns JSON (error), fallback to direct Google Drive
         if (contentType.includes('application/json') || !checkResponse.ok) {
-          console.log('Worker returned error, falling back to direct Google Drive');
           const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
-          window.location.href = directUrl;
+          triggerHiddenDownload(directUrl);
         } else {
-          // Worker is streaming the file, use it
-          window.location.href = workerUrl;
+          triggerHiddenDownload(workerUrl);
         }
       } catch {
-        // Network error with worker, fallback to direct Google Drive
-        console.log('Worker unavailable, falling back to direct Google Drive');
         const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
-        window.location.href = directUrl;
+        triggerHiddenDownload(directUrl);
       }
 
       toast({
