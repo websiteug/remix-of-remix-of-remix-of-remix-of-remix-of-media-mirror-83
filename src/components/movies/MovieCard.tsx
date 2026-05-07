@@ -46,9 +46,9 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
   // Get the correct URL based on content type, include episode info if available
   const watchUrl = isSeries 
     ? episodeInfo 
-      ? `/watch/series/${movie.id}?season=${episodeInfo.seasonNumber}&episode=${episodeInfo.episodeNumber}`
-      : `/watch/series/${movie.id}` 
-    : `/watch/${movie.id}`;
+      ? `/watch/series/${movie.id}?season=${episodeInfo.seasonNumber}&episode=${episodeInfo.episodeNumber}#video-player`
+      : `/watch/series/${movie.id}#video-player` 
+    : `/watch/${movie.id}#video-player`;
   
   // Get poster URL - use episode thumbnail if available
   const posterUrl = episodeInfo?.episodeThumbnailUrl 
