@@ -230,15 +230,21 @@ export default function WatchPage() {
       setIsDownloading(true);
       const filename = getDownloadFilename();
 
-      // For direct video URLs, download directly
+      // Helper: trigger download via hidden iframe so the underlying URL is
+      // never exposed in the address bar (prevents copy-link of source URL).
+      const triggerHiddenDownload = (url: string) => {
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        iframe.src = url;
+        document.body.appendChild(iframe);
+        setTimeout(() => {
+          try { document.body.removeChild(iframe); } catch {}
+        }, 60000);
+      };
+
+      // For direct video URLs, download directly via hidden iframe
       if (isDirectVideoUrl(rawVideoUrl)) {
-        const link = document.createElement("a");
-        link.href = rawVideoUrl;
-        link.download = `${filename}.mp4`;
-        link.target = "_blank";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        triggerHiddenDownload(rawVideoUrl);
 
         toast({
           title: "Download started!",
