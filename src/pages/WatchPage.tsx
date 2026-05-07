@@ -404,7 +404,7 @@ export default function WatchPage() {
           {/* Player Column */}
           <div className={`flex-1 ${isSeries ? "lg:pr-0" : ""}`}>
             {/* Video Container - Iframe Player */}
-            <div className="relative bg-black aspect-video">
+            <div id="video-player" className="relative bg-black aspect-video scroll-mt-20">
               {(() => {
                 const isAgent = movie && isMovieInAgentMode(movie);
                 const isAgentEpisode = isSeries && selectedEpisode?.isAgent;
