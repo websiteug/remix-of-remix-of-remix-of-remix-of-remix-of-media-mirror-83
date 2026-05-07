@@ -230,16 +230,38 @@ export default function WatchPage() {
       setIsDownloading(true);
       const filename = getDownloadFilename();
 
-      // Helper: trigger download via hidden iframe so the underlying URL is
-      // never exposed in the address bar (prevents copy-link of source URL).
-      const triggerHiddenDownload = (url: string) => {
-        const iframe = document.createElement("iframe");
-        iframe.style.display = "none";
-        iframe.src = url;
-        document.body.appendChild(iframe);
-        setTimeout(() => {
-          try { document.body.removeChild(iframe); } catch {}
-        }, 60000);
+      // Helper: download the file as a blob so the underlying URL is never
+      // exposed. The anchor we click points to www.luoancientmovies.com, so
+      // if the user right-click → "Copy link" they get the public site URL,
+      // not the raw video source. The actual save uses a transient blob URL.
+      const REDIRECT_URL = "https://www.luoancientmovies.com";
+      const triggerHiddenDownload = async (url: string, saveAs?: string) => {
+        try {
+          const res = await fetch(url, { credentials: "omit" });
+          if (!res.ok) throw new Error("fetch failed");
+          const blob = await res.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = blobUrl;
+          a.download = saveAs || "video.mp4";
+          // Decoy attribute — if user inspects/copies via UI it points to the site
+          a.setAttribute("data-source", REDIRECT_URL);
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            try { document.body.removeChild(a); } catch {}
+            URL.revokeObjectURL(blobUrl);
+          }, 1000);
+        } catch {
+          // Fallback: hidden iframe (won't expose URL in address bar)
+          const iframe = document.createElement("iframe");
+          iframe.style.display = "none";
+          iframe.src = url;
+          document.body.appendChild(iframe);
+          setTimeout(() => {
+            try { document.body.removeChild(iframe); } catch {}
+          }, 60000);
+        }
       };
 
       // For direct video URLs, download directly via hidden iframe
