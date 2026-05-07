@@ -230,15 +230,21 @@ export default function WatchPage() {
       setIsDownloading(true);
       const filename = getDownloadFilename();
 
-      // For direct video URLs, download directly
+      // Helper: trigger download via hidden iframe so the underlying URL is
+      // never exposed in the address bar (prevents copy-link of source URL).
+      const triggerHiddenDownload = (url: string) => {
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        iframe.src = url;
+        document.body.appendChild(iframe);
+        setTimeout(() => {
+          try { document.body.removeChild(iframe); } catch {}
+        }, 60000);
+      };
+
+      // For direct video URLs, download directly via hidden iframe
       if (isDirectVideoUrl(rawVideoUrl)) {
-        const link = document.createElement("a");
-        link.href = rawVideoUrl;
-        link.download = `${filename}.mp4`;
-        link.target = "_blank";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        triggerHiddenDownload(rawVideoUrl);
 
         toast({
           title: "Download started!",
@@ -270,18 +276,14 @@ export default function WatchPage() {
         
         // If worker returns JSON (error), fallback to direct Google Drive
         if (contentType.includes('application/json') || !checkResponse.ok) {
-          console.log('Worker returned error, falling back to direct Google Drive');
           const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
-          window.location.href = directUrl;
+          triggerHiddenDownload(directUrl);
         } else {
-          // Worker is streaming the file, use it
-          window.location.href = workerUrl;
+          triggerHiddenDownload(workerUrl);
         }
       } catch {
-        // Network error with worker, fallback to direct Google Drive
-        console.log('Worker unavailable, falling back to direct Google Drive');
         const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
-        window.location.href = directUrl;
+        triggerHiddenDownload(directUrl);
       }
 
       toast({
