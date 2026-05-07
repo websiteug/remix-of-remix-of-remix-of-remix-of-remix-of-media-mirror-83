@@ -45,6 +45,7 @@ export default function WatchPage() {
   const { id, seriesId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const { hasActiveSubscription, hasAgentPlan, isLoading: subscriptionLoading } = useSubscription();
   const { track } = useActivityTracker();
