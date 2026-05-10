@@ -48,7 +48,7 @@ export default function WatchPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const { hasActiveSubscription, hasAgentPlan, isLoading: subscriptionLoading } = useSubscription();
+  const { subscription, hasActiveSubscription, hasAgentPlan, isLoading: subscriptionLoading } = useSubscription();
   const { track } = useActivityTracker();
   
   const [movie, setMovie] = useState<Movie | null>(null);
