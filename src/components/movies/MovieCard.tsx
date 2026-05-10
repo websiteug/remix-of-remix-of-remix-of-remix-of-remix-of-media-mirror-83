@@ -216,10 +216,10 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
             </div>
           </div>
         </ContextMenuTrigger>
-        <ContextMenuContent>
-          <ContextMenuItem onSelect={handleDownloadPoster}>
-            <Download className="w-4 h-4 mr-2" />
-            Download Poster
+        <ContextMenuContent className="min-w-0 w-[var(--radix-context-menu-trigger-width)] max-w-[var(--radix-context-menu-trigger-width)] p-1">
+          <ContextMenuItem onSelect={handleDownloadPoster} className="text-xs whitespace-normal break-words">
+            <Download className="w-3.5 h-3.5 mr-1.5 shrink-0" />
+            <span className="truncate">Download Poster</span>
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
