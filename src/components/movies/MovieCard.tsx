@@ -103,87 +103,126 @@ export function MovieCard({ movie, contentType }: MovieCardProps) {
     navigate(watchUrl);
   };
 
+  const handleDownloadPoster = async (e: Event) => {
+    e.preventDefault();
+    if (!posterUrl) return;
+    const safeTitle = (episodeInfo ? episodeInfo.episodeTitle : movie.title)
+      .replace(/[<>:"/\\|?*]/g, "")
+      .replace(/\s+/g, "_");
+    const rawExt = (posterUrl.split("?")[0].split(".").pop() || "jpg").toLowerCase();
+    const ext = rawExt.length <= 4 ? rawExt : "jpg";
+    const filename = `${safeTitle}_poster.${ext}`;
+    try {
+      const res = await fetch(posterUrl, { mode: "cors" });
+      if (!res.ok) throw new Error("fetch failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      track("Download", `Downloaded poster for "${movie.title}"`);
+      toast({ title: "Poster downloaded", description: filename });
+    } catch {
+      window.open(posterUrl, "_blank", "noopener,noreferrer");
+      toast({ title: "Opened poster in new tab", description: "Right-click the image and choose Save image as..." });
+    }
+  };
+
   return (
     <>
-      <div
-        onClick={handleClick}
-        className="group block rounded-lg overflow-hidden transition-transform hover:scale-105 cursor-pointer"
-      >
-        <div className="relative aspect-[2/3] overflow-hidden rounded-lg">
-          <img
-            src={posterUrl}
-            alt={movie.title}
-            className="w-full h-full object-cover transition-transform group-hover:scale-110"
-            onError={(e) => {
-              e.currentTarget.src = '/placeholder.svg';
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          
-          {/* LUO Badge */}
-          <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10">
-            LUO
+      <ContextMenu>
+        <ContextMenuTrigger asChild>
+          <div
+            onClick={handleClick}
+            className="group block rounded-lg overflow-hidden transition-transform hover:scale-105 cursor-pointer"
+          >
+            <div className="relative aspect-[2/3] overflow-hidden rounded-lg">
+              <img
+                src={posterUrl}
+                alt={movie.title}
+                className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                onError={(e) => {
+                  e.currentTarget.src = '/placeholder.svg';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+              {/* LUO Badge */}
+              <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10">
+                LUO
+              </div>
+
+              {/* Agent Badge */}
+              {isAgent && (
+                <div className="absolute top-2 right-2 bg-orange-500 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full flex items-center gap-1 z-10">
+                  <Shield className="w-2.5 h-2.5 md:w-3 md:h-3" />
+                  AGENT
+                </div>
+              )}
+
+              {/* NEW Badge for series with agent episodes */}
+              {hasAgentEpisode && (
+                <div className="absolute top-2 right-2 bg-green-500 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10 animate-pulse">
+                  NEW
+                </div>
+              )}
+
+              {/* Play Button on Hover */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-150"
+                  style={{ background: "linear-gradient(135deg, #1cb7ff 1.22%, #2ff58b 50.24%)" }}
+                >
+                  <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+                </div>
+                <span className="text-white text-[10px] md:text-xs font-medium mt-2 drop-shadow-lg">Play Now</span>
+              </div>
+
+              <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-1">
+                  <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                  <span className="text-[10px] md:text-xs font-medium">{movie.rating}</span>
+                </div>
+              </div>
+              {/* Episode Badge (S2 E3) */}
+              {episodeInfo && (
+                <div className="absolute bottom-2 left-2 flex gap-1 z-10">
+                  <span className="bg-primary text-primary-foreground text-[8px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded">
+                    {episodeInfo.seasonLabel || `S${episodeInfo.seasonNumber}`}
+                  </span>
+                  <span className="bg-accent text-accent-foreground text-[8px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded">
+                    E{episodeInfo.episodeNumber}
+                  </span>
+                </div>
+              )}
+              {/* VJ Badge */}
+              {vjName && (
+                <div className={`absolute ${(isAgent || hasAgentEpisode) ? 'top-9' : 'top-2'} right-2 bg-purple-600 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10`}>
+                  {vjName}
+                </div>
+              )}
+            </div>
+            <div className="mt-2">
+              <h3 className="text-xs md:text-sm font-medium truncate group-hover:text-primary transition-colors">
+                {episodeInfo ? episodeInfo.episodeTitle : movie.title}
+              </h3>
+              <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5">
+                {episodeInfo ? `${movie.title} • ${episodeInfo.seasonLabel || `S${episodeInfo.seasonNumber}`}E${episodeInfo.episodeNumber}` : `${year} • Trending`}
+              </p>
+            </div>
           </div>
-          
-          {/* Agent Badge */}
-          {isAgent && (
-             <div className="absolute top-2 right-2 bg-orange-500 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full flex items-center gap-1 z-10">
-              <Shield className="w-2.5 h-2.5 md:w-3 md:h-3" />
-              AGENT
-            </div>
-          )}
-          
-          {/* NEW Badge for series with agent episodes */}
-          {hasAgentEpisode && (
-            <div className="absolute top-2 right-2 bg-green-500 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10 animate-pulse">
-              NEW
-            </div>
-          )}
-          
-          {/* Play Button on Hover */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-            <div 
-              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-150"
-              style={{ background: "linear-gradient(135deg, #1cb7ff 1.22%, #2ff58b 50.24%)" }}
-            >
-              <Play className="w-6 h-6 text-white fill-white ml-0.5" />
-            </div>
-            <span className="text-white text-[10px] md:text-xs font-medium mt-2 drop-shadow-lg">Play Now</span>
-          </div>
-          
-          <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="flex items-center gap-1">
-              <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-              <span className="text-[10px] md:text-xs font-medium">{movie.rating}</span>
-            </div>
-          </div>
-          {/* Episode Badge (S2 E3) */}
-          {episodeInfo && (
-            <div className="absolute bottom-2 left-2 flex gap-1 z-10">
-              <span className="bg-primary text-primary-foreground text-[8px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded">
-                {episodeInfo.seasonLabel || `S${episodeInfo.seasonNumber}`}
-              </span>
-              <span className="bg-accent text-accent-foreground text-[8px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded">
-                E{episodeInfo.episodeNumber}
-              </span>
-            </div>
-          )}
-          {/* VJ Badge */}
-          {vjName && (
-            <div className={`absolute ${(isAgent || hasAgentEpisode) ? 'top-9' : 'top-2'} right-2 bg-purple-600 text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full z-10`}>
-              {vjName}
-            </div>
-          )}
-        </div>
-        <div className="mt-2">
-          <h3 className="text-xs md:text-sm font-medium truncate group-hover:text-primary transition-colors">
-            {episodeInfo ? episodeInfo.episodeTitle : movie.title}
-          </h3>
-          <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5">
-            {episodeInfo ? `${movie.title} • ${episodeInfo.seasonLabel || `S${episodeInfo.seasonNumber}`}E${episodeInfo.episodeNumber}` : `${year} • Trending`}
-          </p>
-        </div>
-      </div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem onSelect={handleDownloadPoster}>
+            <Download className="w-4 h-4 mr-2" />
+            Download Poster
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
 
       <AuthModal open={showAuthModal} onOpenChange={setShowAuthModal} defaultMode="login" />
       <SubscriptionModal open={showSubscriptionModal} onOpenChange={setShowSubscriptionModal} />
