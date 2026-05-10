@@ -35,6 +35,7 @@ import {
 import { getFileIdFromUrl, isDirectVideoUrl, getGoogleDriveDownloadUrl } from "@/lib/download-service";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
+import { tryConsumeDownload, getDailyLimitForPlan } from "@/lib/download-limit";
 import { SubscriptionRequired } from "@/components/subscription/SubscriptionRequired";
 import { SubscriptionModal } from "@/components/subscription/SubscriptionModal";
 import { AuthModal } from "@/components/auth/AuthModal";
@@ -47,7 +48,7 @@ export default function WatchPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const { hasActiveSubscription, hasAgentPlan, isLoading: subscriptionLoading } = useSubscription();
+  const { subscription, hasActiveSubscription, hasAgentPlan, isLoading: subscriptionLoading } = useSubscription();
   const { track } = useActivityTracker();
   
   const [movie, setMovie] = useState<Movie | null>(null);
@@ -215,6 +216,29 @@ export default function WatchPage() {
     if (!hasActiveSubscription) {
       setShowSubscriptionModal(true);
       return;
+    }
+
+    // Enforce daily download limit per plan (admin/lifetime/agent unlimited)
+    try {
+      const planName = subscription?.plan;
+      const limit = getDailyLimitForPlan(planName);
+      const consume = await tryConsumeDownload(user.id, planName);
+      if (!consume.allowed) {
+        toast({
+          title: "Daily download limit reached",
+          description: `Your ${planName} plan allows ${limit} downloads per day. Upgrade your plan for more downloads.`,
+          variant: "destructive",
+        });
+        return;
+      }
+      if (limit !== -1) {
+        toast({
+          title: "Download started",
+          description: `Daily downloads used: ${consume.count}/${limit}`,
+        });
+      }
+    } catch (e) {
+      console.error("Download limit check failed", e);
     }
 
     try {
