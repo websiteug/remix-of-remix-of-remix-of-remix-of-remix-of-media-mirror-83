@@ -35,6 +35,7 @@ import {
 import { getFileIdFromUrl, isDirectVideoUrl, getGoogleDriveDownloadUrl } from "@/lib/download-service";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/hooks/useSubscription";
+import { tryConsumeDownload, getDailyLimitForPlan } from "@/lib/download-limit";
 import { SubscriptionRequired } from "@/components/subscription/SubscriptionRequired";
 import { SubscriptionModal } from "@/components/subscription/SubscriptionModal";
 import { AuthModal } from "@/components/auth/AuthModal";
