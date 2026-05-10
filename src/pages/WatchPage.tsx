@@ -218,6 +218,29 @@ export default function WatchPage() {
       return;
     }
 
+    // Enforce daily download limit per plan (admin/lifetime/agent unlimited)
+    try {
+      const planName = subscription?.plan;
+      const limit = getDailyLimitForPlan(planName);
+      const consume = await tryConsumeDownload(user.id, planName);
+      if (!consume.allowed) {
+        toast({
+          title: "Daily download limit reached",
+          description: `Your ${planName} plan allows ${limit} downloads per day. Upgrade your plan for more downloads.`,
+          variant: "destructive",
+        });
+        return;
+      }
+      if (limit !== -1) {
+        toast({
+          title: "Download started",
+          description: `Daily downloads used: ${consume.count}/${limit}`,
+        });
+      }
+    } catch (e) {
+      console.error("Download limit check failed", e);
+    }
+
     try {
       if (!rawVideoUrl) {
         toast({
