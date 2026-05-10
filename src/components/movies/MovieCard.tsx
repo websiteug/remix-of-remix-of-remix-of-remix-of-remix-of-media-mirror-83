@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Star, Play, Shield } from "lucide-react";
+import { Star, Play, Shield, Download } from "lucide-react";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import { toast } from "@/hooks/use-toast";
 import type { Movie, Series, ContentItem } from "@/lib/firebase-db";
 import { isMovieInAgentMode } from "@/lib/firebase-db";
 import { useAuth } from "@/contexts/AuthContext";
