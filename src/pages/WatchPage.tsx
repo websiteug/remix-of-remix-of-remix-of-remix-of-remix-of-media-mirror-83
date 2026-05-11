@@ -225,8 +225,8 @@ export default function WatchPage() {
       const consume = await tryConsumeDownload(user.id, planName);
       if (!consume.allowed) {
         toast({
-          title: "Daily download limit reached",
-          description: `Your ${planName} plan allows ${limit} downloads per day. Upgrade your plan for more downloads.`,
+          title: "YOU HAVE REACHED YOUR DOWNLOAD LIMIT FOR TODAY",
+          description: `TRY TOMORROW. Your ${planName} plan allows ${limit} downloads per day (resets at midnight).`,
           variant: "destructive",
         });
         return;
