@@ -59,3 +59,16 @@ export async function tryConsumeDownload(
   const allowed = limit === -1 || result.committed;
   return { allowed, count: newCount, limit };
 }
+
+/**
+ * Reset today's download count for a user. Called when a user activates
+ * a new subscription or upgrades, so they get a fresh daily quota.
+ */
+export async function resetTodayDownloadCount(userId: string): Promise<void> {
+  try {
+    const r = ref(database, `downloadCounts/${userId}/${todayKey()}`);
+    await set(r, 0);
+  } catch (e) {
+    console.error("Failed to reset daily download count:", e);
+  }
+}
