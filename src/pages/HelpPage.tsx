@@ -20,7 +20,7 @@ export default function HelpPage() {
           </div>
           <div>
             <h2 className="text-lg font-semibold mb-2">What is the Agent Plan?</h2>
-            <p className="text-muted-foreground"><p className="text-muted-foreground">The Agent Plan (UGX 10,000) gives you 2-day access to exclusive Agent-marked movies that aren't available on regular plans.</p> to exclusive Agent-marked movies that aren't available on regular plans.</p>
+            <p className="text-muted-foreground">The Agent Plan (UGX 10,000) gives you 5-day access to exclusive Agent-marked movies that aren't available on regular plans.</p>
           </div>
           <div>
             <h2 className="text-lg font-semibold mb-2">My payment was deducted but subscription isn't active?</h2>
