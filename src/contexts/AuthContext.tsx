@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { auth, googleProvider, db } from "@/lib/firebase";
+import { resetTodayDownloadCount } from "@/lib/download-limit";
 
 export interface User {
   id: string;
