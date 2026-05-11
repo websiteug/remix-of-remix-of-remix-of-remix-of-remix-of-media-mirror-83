@@ -50,12 +50,12 @@ export async function tryConsumeDownload(
   const result = await runTransaction(r, (current) => {
     const c = Number(current) || 0;
     if (limit !== -1 && c >= limit) {
-      return c; // do not increment
+      return undefined; // abort transaction so download is not allowed
     }
     return c + 1;
   });
 
   const newCount = Number(result.snapshot.val()) || 0;
-  const allowed = limit === -1 || newCount <= limit;
+  const allowed = limit === -1 || result.committed;
   return { allowed, count: newCount, limit };
 }
