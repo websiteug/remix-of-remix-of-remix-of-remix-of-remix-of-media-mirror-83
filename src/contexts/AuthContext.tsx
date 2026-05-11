@@ -255,6 +255,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Update Firestore
     const userDocRef = doc(db, "users", user.id);
     await updateDoc(userDocRef, { subscription });
+
+    // Reset today's daily download count for fresh quota
+    await resetTodayDownloadCount(user.id);
     
     setUser({
       ...user,
