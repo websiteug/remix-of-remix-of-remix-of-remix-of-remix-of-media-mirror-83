@@ -132,6 +132,9 @@ export async function activateSubscription(
       createdAt: Timestamp.fromDate(now),
     });
 
+    // Reset today's daily download count so user gets fresh quota on new/upgraded plan
+    await resetTodayDownloadCount(userId);
+
     return true;
   } catch (error) {
     console.error("Error activating subscription:", error);
