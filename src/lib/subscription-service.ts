@@ -1,6 +1,7 @@
 import { doc, setDoc, getDoc, Timestamp, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 import { planDurations } from "./pesapal";
+import { resetTodayDownloadCount } from "./download-limit";
 
 export interface Subscription {
   plan: string;
