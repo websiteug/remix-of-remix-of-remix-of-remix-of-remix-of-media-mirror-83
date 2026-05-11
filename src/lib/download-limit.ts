@@ -1,5 +1,5 @@
 import { database } from "./firebase";
-import { ref, get, runTransaction } from "firebase/database";
+import { ref, get, runTransaction, remove, set } from "firebase/database";
 
 // Daily download limits per subscription plan
 export const dailyDownloadLimits: Record<string, number> = {
