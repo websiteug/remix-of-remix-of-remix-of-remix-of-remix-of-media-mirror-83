@@ -66,8 +66,17 @@ export async function tryConsumeDownload(
  */
 export async function resetTodayDownloadCount(userId: string): Promise<void> {
   try {
-    const r = ref(database, `downloadCounts/${userId}/${todayKey()}`);
-    await set(r, 0);
+    // Wipe today's daily counter to 0 (must be a number to satisfy DB validation)
+    const countRef = ref(database, `downloadCounts/${userId}/${todayKey()}`);
+    await set(countRef, 0);
+
+    // Record the reset event in its own node so the marker (a string/timestamp)
+    // doesn't violate the numeric validation on downloadCounts/{uid}/{date}.
+    const markerRef = ref(database, `downloadResetMarkers/${userId}`);
+    await set(markerRef, {
+      lastResetAt: Date.now(),
+      lastResetDate: todayKey(),
+    });
   } catch (e) {
     console.error("Failed to reset daily download count:", e);
   }
