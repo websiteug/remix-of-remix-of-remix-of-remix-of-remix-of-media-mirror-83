@@ -225,6 +225,15 @@ export async function updateUserSubscription(
   });
   
   console.log("[Admin] Subscription also saved to subscriptions collection");
+
+  // Reset today's daily download count so the user gets fresh quota for the new/upgraded plan
+  try {
+    const { resetTodayDownloadCount } = await import("./download-limit");
+    await resetTodayDownloadCount(userId);
+    console.log("[Admin] Daily download count reset for:", userId);
+  } catch (e) {
+    console.error("[Admin] Failed to reset daily download count:", e);
+  }
 }
 
 export async function removeUserSubscription(userId: string): Promise<void> {
