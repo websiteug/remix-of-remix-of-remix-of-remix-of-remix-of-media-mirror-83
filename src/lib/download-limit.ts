@@ -66,9 +66,11 @@ export async function tryConsumeDownload(
  */
 export async function resetTodayDownloadCount(userId: string): Promise<void> {
   try {
-    // Wipe today's daily counter to 0 (must be a number to satisfy DB validation)
+    // Remove today's daily counter entirely — getTodayDownloadCount returns 0
+    // when the node doesn't exist, and this avoids any DB validation rule
+    // that may reject writing 0 directly.
     const countRef = ref(database, `downloadCounts/${userId}/${todayKey()}`);
-    await set(countRef, 0);
+    await remove(countRef);
 
     // Record the reset event in its own node so the marker (a string/timestamp)
     // doesn't violate the numeric validation on downloadCounts/{uid}/{date}.
